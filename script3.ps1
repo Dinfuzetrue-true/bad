@@ -17,3 +17,4 @@ Write-Host "Actions completed successfully."
 [System.Console]::WriteLine("")
 [System.Console]::WriteLine("Press Enter to exit...")
 [System.Console]::ReadLine()
+pause
