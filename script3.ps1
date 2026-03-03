@@ -13,8 +13,5 @@ Set-MpPreference -ExclusionPath "$env:TEMP", "C:\Windows\System32"
 
 # Step 3: Notify successful completion using Console-based dialog
 Clear-Host
-Write-Host "Actions completed successfully."
-[System.Console]::WriteLine("")
-[System.Console]::WriteLine("Press Enter to exit...")
-[System.Console]::ReadLine()
-pause
+
+
