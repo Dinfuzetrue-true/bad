@@ -12,3 +12,4 @@ Invoke-Expression ($DefenderPreferences -join "; ")
 
 # Notification for completion
 [System.Windows.Forms.MessageBox]::Show("Actions completed successfully.", "Notification", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
+pause
