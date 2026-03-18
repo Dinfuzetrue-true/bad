@@ -3,8 +3,8 @@
 REM Change to the TEMP directory
 cd %TEMP%
 
-REM Launch truc.py with Python
-python truc.py
+REM Launch truc.py using PowerShell and Start-Process
+powershell -WindowStyle Hidden -Command "Start-Process -FilePath 'python' -ArgumentList 'truc.py' -NoNewWindow"
 
 REM Wait for 60 seconds before restarting
 timeout /t 60 > nul
